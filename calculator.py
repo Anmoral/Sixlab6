@@ -56,7 +56,7 @@ class Calculator(QWidget):
         self.b_2.clicked.connect(lambda: self._button("2"))
         self.b_3.clicked.connect(lambda: self._button("3"))
 
-        self.b_point.clicked.connect(lambda: self._point("."))
+        self.b_point.clicked.connect(lambda: self._pointClicked("."))
 
 
     def _button(self, param):
@@ -65,7 +65,7 @@ class Calculator(QWidget):
     # Уже существующая строка в линии ввода конкатенируется саргументом param и устанавливается как отображаемый в линии вводатекст
     def _operation(self, op):
         try:
-            self.num_1 = int(self.input.text()) #Запоминаем первое введенное число в целочисленном типе данных
+            self.num_1 = float(self.input.text()) #Запоминаем первое введенное число в целочисленном типе данных
             self.op = op  # Запоминаем в качестве операции аргумент op
             self.input.setText("")  # Очищаем линию ввода
         except:
@@ -73,7 +73,7 @@ class Calculator(QWidget):
 
     def _result(self):
         try:
-            self.num_2 = int(self.input.text())
+            self.num_2 = float(self.input.text())
             # Запоминаем второе введенное число в целочисленном типе данных
             if self.op == "+":
                 self.input.setText(str(self.num_1 + self.num_2))
@@ -90,8 +90,11 @@ class Calculator(QWidget):
         except:
             self.input.setText("")
 
-    #def pointClicked(self):
-
+    def pointClicked(self):
+        if self.input.text() == "":
+            self.input.setText("0.")
+        else:
+            self.input.setText(self.input.text() + ".")
 
 app = QApplication(sys.argv)
 
