@@ -37,7 +37,7 @@ class Calculator(QWidget):
         self.b_multiplication = QPushButton("*", self)
         self.hbox_operation.addWidget(self.b_multiplication)
 
-        self.b_division = QPushButton("//", self)
+        self.b_division = QPushButton("/", self)
         self.hbox_operation.addWidget(self.b_division)
 
         self.b_result = QPushButton("=", self)
@@ -50,18 +50,23 @@ class Calculator(QWidget):
         self.b_plus.clicked.connect(lambda: self._operation("+"))
         self.b_minus.clicked.connect(lambda: self._operation("-"))
         self.b_multiplication.clicked.connect(lambda: self._operation("*"))
-        self.b_division.clicked.connect(lambda: self._operation("//"))
+        self.b_division.clicked.connect(lambda: self._operation("/"))
         self.b_result.clicked.connect(self._result)
         self.b_1.clicked.connect(lambda: self._button("1"))
         self.b_2.clicked.connect(lambda: self._button("2"))
         self.b_3.clicked.connect(lambda: self._button("3"))
 
-        self.b_point.clicked.connect(lambda: self._pointClicked("."))
+        self.b_point.clicked.connect(lambda: self._button("."))
 
 
     def _button(self, param):
         line = self.input.text()
-        self.input.setText(line + param)
+        if line.count(".") == 1 and param == ".":
+            pass
+        elif line == "" and param == ".":
+            self.input.setText("0" + param)
+        else:
+            self.input.setText(line + param)
     # Уже существующая строка в линии ввода конкатенируется саргументом param и устанавливается как отображаемый в линии вводатекст
     def _operation(self, op):
         try:
@@ -84,17 +89,12 @@ class Calculator(QWidget):
             if self.op == "*":
                 self.input.setText(str(self.num_1 * self.num_2))
 
-            if self.op == "//":
-                self.input.setText(str(self.num_1 // self.num_2))
+            if self.op == "/":
+                self.input.setText(str(self.num_1 / self.num_2))
             #Производим вычисление в зависимости от операции и устанавливаем его в качестве текста в линию ввода
         except:
             self.input.setText("")
 
-    def pointClicked(self):
-        if self.input.text() == "":
-            self.input.setText("0.")
-        else:
-            self.input.setText(self.input.text() + ".")
 
 app = QApplication(sys.argv)
 
